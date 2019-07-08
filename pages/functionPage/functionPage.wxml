@@ -22,7 +22,7 @@
     <view>0x</view>
     <input class="input" type="text" cursor-spacing="20" bindinput="orderInput" placeholder="请输入指令" value='{{accountInputStr}}' />
     <button bindtap='sentOrder'>发送</button>
-    <button bindtap='zhendong'>震动</button>
+    <button bindtap='zhendong'>b7震动</button>
   </view>
 
   <view class="function-button-div2">
