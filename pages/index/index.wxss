@@ -1,0 +1,52 @@
+/* pages/index/index.wxss */
+.log {
+  width: 90%;
+  left: 5%;
+  position: relative;
+  margin-top: 10rpx;
+}
+.scroll-list {
+  max-height: 300rpx;
+}
+
+.scan-view {
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 10rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
+}
+.scan-view button {
+position:relative;
+display:block;
+margin-left:auto;
+margin-right:auto;
+padding-left:14px;
+padding-right:14px;
+box-sizing:border-box;
+font-size:18px;
+width: 48%;
+}
+
+.devices_summary {
+  margin-top: 30px;
+  padding: 10px 5%;
+  font-size: 16px;
+}
+.device_list {
+  height: 400rpx;
+  margin: 50px 5%;
+  margin-top: 0;
+  border: 1px solid #EEE;
+  border-radius: 5px;
+  width: auto;
+}
+.device_item {
+  border-bottom: 1px solid #EEE;
+  padding: 10px;
+  color: #666;
+}
+.device_item_hover {
+  background-color: rgba(0, 0, 0, .1);
+}
