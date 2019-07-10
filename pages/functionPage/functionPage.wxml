@@ -16,19 +16,23 @@
 </view>
 
 
-<!-- 底部按钮 -->
-<view class='function-button-div'>
-  <view class='function-input'>
+  <view class='function-input'> 
     <view>0x</view>
-    <input class="input" type="text" cursor-spacing="20" bindinput="orderInput" placeholder="请输入指令" value='{{accountInputStr}}' />
-    <button bindtap='sentOrder'>发送</button>
-    <button bindtap='zhendong'>b7震动</button>
-  </view>
-
-  <view class="function-button-div2">
-     <button type="primary" class='function-button_left' bindtap="startClear">清空log日志</button>
-    <button type="primary" class='function-button_right' bindtap="closeBLEConnection">断开蓝牙连接</button>
-  </view>
+        <input class="input" type="text" cursor-spacing="20" bindinput="orderInput" placeholder="请输入指令" />
+        <button bindtap='sentOrder'>发送</button>
+  </view> 
 
 
+<scroll-view scroll-y scroll-with-animation style="height=100px;">
+      
+        <view wx:for="{{buttons}}" wx:key="index" data-cmd="{{item.cmd}}" bindtap="sendCmd" class="device_item" hover-class="device_item_hover">
+        <button type="primary" class='function-button_left'>{{item.name}}</button>
+        </view>
+      </scroll-view>
+
+
+<!-- 底部按钮 -->
+<view>
+  <button type="primary" class='function-button_left' bindtap="startClear">清空log日志</button>
+  <button type="primary" class='function-button_right' bindtap="closeBLEConnection">断开蓝牙连接</button>
 </view>

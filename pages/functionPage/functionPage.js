@@ -17,6 +17,33 @@ Page({
     notifyCharacteristicId: "",
     connected: true,
     canWrite: false,
+    buttons: [
+      { name: "测血压", cmd: "C711" },
+      { name: "设置时间", cmd: "A307E307090F2D13" },
+      { name: "计步同步", cmd: "B2FA" },
+      { name: "睡眠同步", cmd: "B3FA" },
+      { name: "心率同步", cmd: "E6FA" },
+      { name: "开始测试", cmd: "E511" },
+      { name: "停止测试", cmd: "E500" },
+      { name: "同步血压", cmd: "C8FA" },
+      { name: "测血压", cmd: "C711" },
+      { name: "停测血压", cmd: "C700" },
+      { name: "固件升级", cmd: "C8FA" },
+      { name: "打开闹钟", cmd: "AB7F10190205020001" },
+      { name: "关闭闹钟", cmd: "AB7F10170000000001" },
+      { name: "获取蓝牙版本", cmd: "A1" },
+      { name: "获取设备电量", cmd: "A2" },
+      { name: "切换公制", cmd: "A00101" },
+      { name: "切换英制", cmd: "A00201" },
+      { name: "推送消息内容", cmd: "C500020C63A890016D88606F51855BB9" },
+      { name: "震动", cmd: "AB00000001010000"},
+      { name: "测试通道", cmd: "0208" },
+      { name: "打开相机", cmd: "C401" },
+      { name: "关闭相机", cmd: "C403" },
+      { name: "同步跳绳", cmd: "B9FA" },
+      { name: "今天运动时间", cmd: "CC" },
+      { name: "7天运动时间", cmd: "CDFA" },
+    ],
   },
 
   /**
@@ -169,7 +196,7 @@ Page({
       var resValue = utils.ab2hext(res.value); //16进制字符串
       var resValueStr = utils.hexToString(resValue);
   
-      var log0 = that.data.textLog + "成功获取：" + resValueStr + "\n" + "16hex: " + resValue + "\n";
+      var log0 = that.data.textLog + "字符结果：" + resValueStr + "<--\n" + "16hex结果: " + resValue + "<--\n";
       that.setData({
         textLog: log0,
       });
@@ -188,8 +215,7 @@ Page({
     var that = this; 
     var orderStr = that.data.orderInputStr;//指令
     let order = utils.hexStringToArrayBuffer(orderStr); //this.Str2Bytes('0xAB00000001010000');// 0xAB00000001010000;//
-
-    var log = that.data.textLog + "发送: " + orderStr + "\n";
+    var log = that.data.textLog + "-->发送: " + orderStr + "\n";
     that.setData({
       textLog: log,
     });
@@ -197,26 +223,51 @@ Page({
 
     that.writeBLECharacteristicValue(order);
   },
-  zhendong: function () {
-    var that = this;
-    var orderStr = 'AB00000001010000';//指令
-    let order = utils.hexStringToArrayBuffer(orderStr); 
-    var log = that.data.textLog + "发送: " + orderStr + "\n";
-    that.setData({
-      textLog: log,
-    });
-    that.writeBLECharacteristicValue(order);
+  AB00000001010000: function () {
+    this.setData({
+      orderInputStr: 'AB00000001010000'
+    })
+    this.sentOrder();
   },
+  A1: function(){
+    this.setData({
+      orderInputStr: 'A1'
+    })
+    this.sentOrder();
+  },
+  A307E307090F2D13: function() {
+    this.setData({
+      orderInputStr: 'A307E307090F2D13'
+    })
+    this.sentOrder();
+  },
+  B2FA: function() {
+    this.setData({
+      orderInputStr: 'B2FA'
+    })
+    this.sentOrder();
+  },
+  //发送16hex 命令
+  sendCmd: function (e) {
+    const ds = e.currentTarget.dataset;
+    const cmd = ds.cmd; //cmd
+    this.setData({
+      orderInputStr: cmd
+    })
+    this.sentOrder();
+  },
+
+
 
   //向低功耗蓝牙设备特征值中写入二进制数据。
   //注意：必须设备的特征值支持write才可以成功调用，具体参照 characteristic 的 properties 属性
   writeBLECharacteristicValue: function (order){
     var that = this;
     let byteLength = order.byteLength;
-    var log = that.data.textLog + "当前执行指令的字节长度:" + byteLength + "\n";
-    that.setData({
-      textLog: log,
-    });
+    // var log = that.data.textLog + "当前执行指令的字节长度:" + byteLength + "\n";
+    // that.setData({
+    //   textLog: log,
+    // });
 
     //app.showModal1(that.data.writeCharacteristicId);
 
@@ -233,41 +284,20 @@ Page({
         //     that.writeBLECharacteristicValue(order.slice(20, byteLength));
         //   },150);
         // }
-        var log = that.data.textLog + "写入成功：" + res.errMsg + "\n";
+        var log = that.data.textLog + "成功写入" + byteLength + "字节\n";
         that.setData({
           textLog: log,
         });
       },
 
       fail: function (res) {
-        var log = that.data.textLog + "写入失败" + res.errMsg+"\n";
+        var log = that.data.textLog + "写入失败: " + res.errMsg +"字节\n";
         that.setData({
           textLog: log,
         });
       }
       
     })
-  },
-  Str2Bytes(str) {
-    var pos = 0;
-    var len = str.length;
-    if (len % 2 != 0) {
-      return null;
-    }
-    len /= 2;
-    var hexA = new Array();
-    for (var i = 0; i < len; i++) {
-      var s = str.substr(pos, 2);
-      var v = parseInt(s, 16);
-      hexA.push(v);
-      pos += 2;
-    }
-    // return hexA;
-
-    const array = new Uint8Array(hexA.length)
-    hexA.forEach((item, index) => array[index] = item)
-    return array.buffer;
-
   }
 
 })
